@@ -1,0 +1,54 @@
+h1 {
+    color: midnightblue;
+    text-align: center; 
+}
+
+p a:hover {
+    color: gold;
+}
+
+img {
+    max-width:100%;
+    max-height:100%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.container-fluid p {
+    text-align: center; 
+}
+
+
+/* navbar */
+.navbar {
+    background-color: midnightblue; 
+    padding: 8px; 
+}
+
+.navbar-default .navbar-brand:hover, 
+.navbar-default .navbar-collapse .navbar-nav a:hover {
+    color:gold; 
+}
+
+.navbar-default .navbar-brand, 
+.navbar-default .navbar-collapse .navbar-nav a {
+    color: #ffffff;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #ffffff; 
+}
+
+/* footer */
+
+.blog-footer a {
+    color: midnightblue;
+    font-size: 30px; 
+}
+
+.blog-footer p {
+    text-align: center; 
+}

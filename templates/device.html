@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}SmartHome{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1> {{ device.name }} </h1>
+    <hr>
+    <p> Description: {{ device.description }}</p>
+    <p> Device Id: {{ device.device_id }}</p>
+    <hr>
+
+
+	<form method="POST" action="/devices/{{ device.id }}">
+
+	<div class="btn-group btn-group-toggle" data-toggle="buttons">
+	  <label class="btn btn-secondary">
+	    	<input type="radio" name='on' value='on'> On
+	  </label>
+	  <label class="btn btn-secondary">
+	    	<input type="radio" name='on' value='off'> Off
+	  </label>
+	</div>
+    {{ form.hidden_tag() }}
+    <br>
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+</div>
+{% endblock %}

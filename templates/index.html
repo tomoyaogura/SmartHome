@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}SmartHome{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Smart Home App </h1>
+    <ul class="list-group">
+        {% for device in devices %}
+            {% if device.state %}
+                {% set class = 'list-group-item active' %}
+                {% set text = 'On' %}
+            {% else %}
+                {% set class = 'list-group-item' %}
+                {% set text = 'Off' %}
+            {% endif %}
+            <li class={{ class }}><a href=/devices/{{ device.id }}> {{ device.name }}: {{ text }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
