@@ -1,13 +1,15 @@
 import enum
 
+from sqlalchemy.ext.hybrid import hybrid_property
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from database import db
+from scheduler import get_jobs
 
 class DeviceType(enum.Enum):
-	rf_outlet = 1
-	fan = 2
+    rf_outlet = 1
+    fan = 2
 
 class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,3 +22,15 @@ class Device(db.Model):
 
     def __repr__(self):
         return '<Device %r>' % self.name
+
+    @hybrid_property
+    def schedules(self):
+        return get_jobs(self)
+
+    @hybrid_property
+    def schedules_count(self):
+        return len(get_jobs(self))
+
+class Label(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
