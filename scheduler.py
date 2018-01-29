@@ -2,7 +2,6 @@ from tzlocal import get_localzone
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from datetime import datetime, timedelta
-from natsort import natsort
 import os
 
 FILE_PATH =  os.path.abspath(os.path.dirname(__file__))

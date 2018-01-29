@@ -23,8 +23,8 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'get_from_env'
     bootstrap = Bootstrap(app)
-    db.init_app(app)  
-    scheduler.start()  
+    db.init_app(app)
+    scheduler.start()
     return app
 
 app = create_app()
@@ -66,7 +66,6 @@ def schedule_update(device_id):
             return 'Device not found'
     elif request.method == 'POST':
         if device:
-            print(request.form)
             if form.validate_on_submit():
                 if request.form['on'] == 'on':
                     function = turn_on
@@ -111,4 +110,7 @@ def devices(device_id):
 MAIN APP
 """
 if __name__ == "__main__":
+  if os.environ.get('DEBUG'):
     app.run()
+  else:
+    app.run(host='0.0.0.0')
