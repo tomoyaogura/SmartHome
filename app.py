@@ -36,6 +36,26 @@ class ScheduleUpdate(FlaskForm):
     state = BooleanField('on')
 
 
+@app.route("/shutdown")
+def shutdown():
+    devices = Device.query.all()
+    for device in devices:
+        turn_off(device.device_id, device.device_type)
+        Device.query.filter_by(id=device.id).update({'state': False})
+    db.session.commit()
+    return render_template("index.html", devices=devices)
+
+@app.route("/activate")
+def activate():
+    devices = Device.query.all()
+    lights = ['LEDs', 'Living Room', 'Kitchen Light']
+    for device in devices:
+        if device.name in lights:
+            turn_on(device.device_id, device.device_type)
+            Device.query.filter_by(id=device.id).update({'state': True})
+    db.session.commit()
+    return render_template("index.html", devices=devices)
+
 @app.route("/debug")
 def hello():
     return "Hello World"
@@ -95,10 +115,10 @@ def devices(device_id):
             if form.validate_on_submit():
                 if request.form['on'] == 'on':
                     state = True
-                    turn_on(device.device_id)
+                    turn_on(device.device_id, device.device_type)
                 else:
                     state = False
-                    turn_off(device.device_id)
+                    turn_off(device.device_id, device.device_type)
                 Device.query.filter_by(id=device_id).update({'state': state})
                 db.session.commit()
                 return redirect(url_for('index'))
