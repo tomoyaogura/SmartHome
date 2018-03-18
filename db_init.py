@@ -1,4 +1,5 @@
-from app import app, db
+from app import db
+from runserver import app
 from models import Device, DeviceType
 
 DEFAULT_DEVICES = [ {'name': 'Water Heater', 'device_id': '302-1', 'device_type': DeviceType.RF},

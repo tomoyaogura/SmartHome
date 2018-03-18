@@ -3,8 +3,9 @@ from time import sleep
 
 import subprocess
 
-from models import DeviceType
+from models import DeviceType, Device
 import config
+from database import db
 
 
 def is_raspi():
@@ -34,6 +35,8 @@ def turn_on(outlet_id, device_type):
                 _pin_flicker(int(outlet_id.split('-')[1]))
         else:
             print('Unknown device type')
+    Device.query.filter_by(device_id=outlet_id).update({'state': True})
+    db.session.commit()
 
 def turn_off(outlet_id, device_type):
     if os.environ.get('DEBUG') or not IS_RASPI:
@@ -46,6 +49,8 @@ def turn_off(outlet_id, device_type):
                 _pin_flicker(int(outlet_id.split('-')[1]))
         else:
             print('Unknown device type')
+    Device.query.filter_by(device_id=outlet_id).update({'state': False})
+    db.session.commit()
 
 # Flickers outlet_id
 def flicker(outlet_id, on_duration=1):
