@@ -1,0 +1,14 @@
+[Unit]
+Description=SmartHome Server
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/SmartHome
+Environment=SECRET='abcdef0123321fedcba'
+ExecStart=/usr/bin/python runserver.py 
+Restart=on-failure 
+
+[Install]
+WantedBy=multi-user.target
