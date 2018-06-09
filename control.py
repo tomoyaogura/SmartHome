@@ -82,7 +82,7 @@ def _send_pulse(pulse_id):
     subprocess.call(args)
 
 def _pin_flicker(outlet_id):
-    GPIO.output(outlet_id, True)
+    GPIO.output(int(outlet_id), True)
     sleep(0.5)
-    GPIO.output(outlet_id, False)
+    GPIO.output(int(outlet_id), False)
 
