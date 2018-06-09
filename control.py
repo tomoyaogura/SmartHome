@@ -63,7 +63,7 @@ def turn_off(device):
     else:
         if device.device_type == DeviceType.RF:
             _send_pulse(device.off_code)
-        elif device_type in [DeviceType.FAN, DeviceType.LIGHT]:
+        elif device.device_type in [DeviceType.FAN, DeviceType.LIGHT]:
             _pin_flicker(device.off_code)
         else:
             print('Unknown device type')
