@@ -13,7 +13,7 @@ jobstores = {
 scheduler = BackgroundScheduler(jobstores=jobstores, timezone=get_localzone())
 
 def timer(device, func, time_delta):
-    scheduler.add_job(func, 'date', args=[device.device_id, device.device_type], next_run_time= datetime.now() + time_delta, id=get_new_id(device))
+    scheduler.add_job(func, 'date', args=[device], next_run_time= datetime.now() + time_delta, id=get_new_id(device))
 
 def get_jobs(device):
     jobs = [j for j in scheduler.get_jobs() if j.id.split('-')[0] == device.name]

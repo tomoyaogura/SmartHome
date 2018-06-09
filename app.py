@@ -33,7 +33,6 @@ def create_app(app_env):
             obj = {
                 'id': device.id,
                 'name': device.name,
-                'device_id': device.device_id,
                 'device_type': device.device_type.name,
                 'state': device.state
             }
@@ -51,9 +50,9 @@ def create_app(app_env):
             if not request.json or 'state' not in request.json or not isinstance(request.json['state'], bool):
                 abort(400)
             if request.json['state']:
-                turn_on(device.device_id, device.device_type)
+                turn_on(device)
             else:
-                turn_off(device.device_id, device.device_type)
+                turn_off(device)
             response = jsonify({'result': True})
             response.status_code = 200
             return response
@@ -61,7 +60,6 @@ def create_app(app_env):
             response = jsonify({
                 'id': device.id,
                 'name': device.name,
-                'device_id': device.device_id,
                 'device_type': device.device_type.name,
                 'state': device.state
             })
@@ -72,7 +70,7 @@ def create_app(app_env):
     def shutdown():
         devices = Device.query.filter_by(state=True)
         for device in devices:
-            turn_off(device.device_id, device.device_type)
+            turn_off(device)
             Device.query.filter_by(id=device.id).update({'state': False})
         db.session.commit()
         return render_template("index.html", devices=devices)
@@ -83,7 +81,7 @@ def create_app(app_env):
         lights = ['LEDs', 'Living Room', 'Kitchen Light']
         for device in devices:
             if device.name in lights:
-                turn_on(device.device_id, device.device_type)
+                turn_on(device)
                 Device.query.filter_by(id=device.id).update({'state': True})
         db.session.commit()
         return render_template("index.html", devices=devices)
@@ -147,10 +145,10 @@ def create_app(app_env):
                 if form.validate_on_submit():
                     if request.form['on'] == 'on':
                         state = True
-                        turn_on(device.device_id, device.device_type)
+                        turn_on(device)
                     else:
                         state = False
-                        turn_off(device.device_id, device.device_type)
+                        turn_off(device)
                     Device.query.filter_by(id=device_id).update({'state': state})
                     db.session.commit()
                     return redirect(url_for('index'))

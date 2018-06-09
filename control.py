@@ -17,40 +17,57 @@ def is_raspi():
 
 IS_RASPI = False
 
+def get_all_pins_used():
+    # devices = Device.query.all()
+    # pins = set()
+    # for device in devices:
+    #     if device.device_type in [DeviceType.LIGHT, DeviceType.FAN]:
+    #         pins.add(device.on_code)
+    #         pins.add(device.off_code)
+    # return pins
+
+    return [20, 21, 16, 26, 19, 13, 6, 12, 5, 1]
+
 if is_raspi():
     IS_RASPI = True
     import RPi.GPIO as GPIO
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(20, GPIO.OUT)
-    GPIO.setup(21, GPIO.OUT)
+    pins = get_all_pins_used()
+    for pin in pins:
+        GPIO.setup(pin, GPIO.OUT)
 
-def turn_on(outlet_id, device_type):
+else:
+    pins = get_all_pins_used()
+    for pin in pins:
+        print('Setting up pin: {}'.format(pin))
+
+def turn_on(device):
     if os.environ.get('DEBUG') or not IS_RASPI:
-        print('ON!')
+        message = 'Turning on:\n Device: {}\n Type: {}\n Code:{}'.format(device.name, device.device_type, device.on_code)
+        print(message)
     else:
-        if device_type == DeviceType.RF:
-            _send_pulse(config.CODES[outlet_id][0])
-        elif device_type == DeviceType.FAN:
-            if outlet_id.split('-')[0] == 'L':
-                _pin_flicker(int(outlet_id.split('-')[1]))
+        if device.device_type == DeviceType.RF:
+            _send_pulse(device.on_code)
+        elif device.device_type in [DeviceType.LIGHT, DeviceType.FAN]:
+            _pin_flicker(device.on_code)
         else:
             print('Unknown device type')
-    Device.query.filter_by(device_id=outlet_id).update({'state': True})
+    Device.query.filter_by(id=device.id).update({'state': True})
     db.session.commit()
 
-def turn_off(outlet_id, device_type):
+def turn_off(device):
     if os.environ.get('DEBUG') or not IS_RASPI:
-        print('OFF!')
+        message = 'Turning off:\n Device: {}\n Type: {}\n Code:{}'.format(device.name, device.device_type, device.off_code)
+        print(message)
     else:
-        if device_type == DeviceType.RF:
-            _send_pulse(config.CODES[outlet_id][1])
-        elif device_type == DeviceType.FAN:
-            if outlet_id.split('-')[0] == 'L':
-                _pin_flicker(int(outlet_id.split('-')[1]))
+        if device.device_type == DeviceType.RF:
+            _send_pulse(device.off_code)
+        elif device_type in [DeviceType.FAN, DeviceType.LIGHT]:
+            _pin_flicker(device.off_code)
         else:
             print('Unknown device type')
-    Device.query.filter_by(device_id=outlet_id).update({'state': False})
+    Device.query.filter_by(id=device.id).update({'state': False})
     db.session.commit()
 
 # Flickers outlet_id

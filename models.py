@@ -9,7 +9,8 @@ from scheduler import get_jobs
 
 class DeviceType(enum.Enum):
     RF = 1
-    FAN = 2
+    LIGHT = 2
+    FAN = 3 
 
 class Device(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,8 +18,9 @@ class Device(db.Model):
     description = db.Column(db.String(120))
     time_off = db.Column(db.DateTime, unique=True)
     device_type = db.Column(db.Enum(DeviceType), nullable=False)
-    device_id = db.Column(db.String(120), unique=True, nullable=False)
     state = db.Column(db.Boolean, default=False)
+    on_code = db.Column(db.String(10))
+    off_code = db.Column(db.String(10))
 
     def __repr__(self):
         return '<Device %r>' % self.name
