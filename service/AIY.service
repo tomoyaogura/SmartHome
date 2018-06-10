@@ -1,0 +1,14 @@
+[Unit]
+Description=AIY
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/AIY-voice-kit-python
+ExecStart=/home/pi/AIY-voice-kit-python/env/bin/python src/smarthome_AIY.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
