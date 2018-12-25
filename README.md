@@ -3,5 +3,6 @@ RF Remote outlet based on [Etekcity Wireless Outlets](https://smile.amazon.com/E
 
 # Setup
 1. Use raspi_setup repo to setup the raspberry pi with correct installation
-2. python db_init.py
-3. python app.py
+2. pip install -r requirements.txt
+3. python db_init.py
+4. python runserver.py

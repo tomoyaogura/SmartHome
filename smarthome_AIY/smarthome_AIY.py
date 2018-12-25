@@ -33,7 +33,7 @@ import requests
 from google.assistant.library import Assistant
 from google.assistant.library.event import EventType
 
-from smarthome_configs import RASPI_HOST, ALLOWED_COMMANDS
+from configs import RASPI_HOST, ALLOWED_COMMANDS
 
 logging.basicConfig(
     level=logging.INFO,
